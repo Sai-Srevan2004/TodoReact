@@ -1,32 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import TaskList from '../components/TaskList';
 import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUserTasks } from '../redux/taskSlice';
 
 const AllTasksPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const username = localStorage.getItem('username');  // Get username from localStorage
-
-  // ✅ Load tasks from localStorage into Redux store on page load
-  useEffect(() => {
-    if (username) {
-      dispatch(setUserTasks(username));
-    }
-  }, [dispatch, username]);
 
   return (
     <Box
       sx={{
-        width: '100vw',
-        height: '100vh',
+        width: '100vw',           // Full viewport width
+        height: '100vh',          // Full viewport height
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#e3f2fd',
+        backgroundColor: '#e3f2fd',  // Light blue background
         p: 4
       }}
     >
@@ -38,7 +27,7 @@ const AllTasksPage = () => {
         📝 Your To-Do Tasks
       </Typography>
 
-      {/* Task List */}
+      {/* Task List Table directly on the background */}
       <TaskList />
 
       {/* Button to Add New Tasks */}
