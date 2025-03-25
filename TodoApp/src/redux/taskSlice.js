@@ -20,19 +20,22 @@ const taskSlice = createSlice({
   },
   reducers: {
     setUserTasks: (state, action) => {
-      state.tasks = loadTasksFromLocalStorage(action.payload);  // Load specific user tasks
+      state.tasks = loadTasksFromLocalStorage(action.payload);  
     },
     addTask: (state, action) => {
-      state.tasks.push(action.payload);
-      saveTasksToLocalStorage(action.payload.username, state.tasks);
+      const { username, task, priority } = action.payload;
+      state.tasks.push({ task, priority });
+      saveTasksToLocalStorage(username, state.tasks);  // 💾 Save on add
     },
     deleteTask: (state, action) => {
       const { username, index } = action.payload;
       state.tasks.splice(index, 1);
-      saveTasksToLocalStorage(username, state.tasks);
+      saveTasksToLocalStorage(username, state.tasks);  // 💾 Save on delete
     },
-    clearTasks: (state) => {
+    clearTasks: (state, action) => {
+      const { username } = action.payload;
       state.tasks = [];
+      saveTasksToLocalStorage(username, []);  // 💾 Save empty tasks
     }
   }
 });
