@@ -23,7 +23,7 @@ const LoginPage = () => {
     if (validUser) {
       dispatch(login({ username }));
       dispatch(setUserTasks(username));   // Load user-specific tasks
-      navigate('/all-tasks');
+      navigate('/add-task');
     } else {
       setError('Invalid username or password');
     }
