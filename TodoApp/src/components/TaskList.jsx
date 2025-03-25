@@ -65,7 +65,7 @@ const TaskList = () => {
                   <Tooltip title="Delete Task" arrow>
                     <IconButton
                       onClick={() => dispatch(deleteTask({
-                        username: user.username,    // Pass username
+                        username:username,    // Pass username
                         index                       // Task index
                       }))}
                       sx={{ color: '#d32f2f', '&:hover': { color: '#f00' } }}

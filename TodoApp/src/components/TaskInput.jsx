@@ -6,18 +6,28 @@ import { TextField, Button, MenuItem, Box, Typography, Alert } from '@mui/materi
 const TaskInput = () => {
   const [task, setTask] = useState('');
   const [priority, setPriority] = useState('Low');
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const { username } = useSelector((state) => state.auth.user);
 
   const handleAddTask = () => {
-    dispatch(addTask({ 
-      username: username,   // Pass username
-      task: { task, priority }   // Task object
+    // Properly validate for empty or whitespace-only tasks
+    if (!task || !task.trim()) {
+      setError('Please enter a valid task');
+      return;  // Exit the function if invalid task
+    }
+
+    // Dispatch the task with the username
+    dispatch(addTask({
+      username: username,   
+      task: { task: task.trim(), priority }   // Use trimmed task
     }));
+
+    // Clear the form fields after adding valid task
     setTask('');
-    setPriority('Low')
+    setPriority('Low');
+    setError('');  
   };
-  
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -25,6 +35,8 @@ const TaskInput = () => {
         Add New Task
       </Typography>
 
+      {/* Display error message */}
+      {error && <Alert severity="error">{error}</Alert>}
 
       {/* Task Input */}
       <TextField
@@ -49,6 +61,7 @@ const TaskInput = () => {
         <MenuItem value="Low">✅ Low</MenuItem>
       </TextField>
 
+      {/* Add Task Button */}
       <Button
         variant="contained"
         color="primary"

@@ -4,7 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const loadTasksFromLocalStorage = (username) => {
   if (!username) return [];
   const tasks = localStorage.getItem(`tasks_${username}`);
-
   return tasks ? JSON.parse(tasks) : [];
 };
 
@@ -30,16 +29,15 @@ const taskSlice = createSlice({
     },
     deleteTask: (state, action) => {
       const { username, index } = action.payload;
-      state.tasks.splice(index, 1);  // Remove the task
-      saveTasksToLocalStorage(username, state.tasks);  // Save updated list
+      
+      // Ensure index is valid before deleting
+      if (index >= 0 && index < state.tasks.length) {
+        state.tasks = state.tasks.filter((_, i) => i !== index);  // Properly remove the task
+        saveTasksToLocalStorage(username, state.tasks);  // Save updated list
+      }
     },
-    clearTasks: (state, action) => {
-      const { username } = action.payload;
-      state.tasks = [];  // Clear all tasks
-      saveTasksToLocalStorage(username, []);  // Save empty list to localStorage
-    }
   }
 });
 
-export const { setUserTasks, addTask, deleteTask, clearTasks } = taskSlice.actions;
+export const { setUserTasks, addTask, deleteTask } = taskSlice.actions;
 export default taskSlice.reducer;
