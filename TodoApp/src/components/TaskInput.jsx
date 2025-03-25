@@ -5,8 +5,7 @@ import { TextField, Button, MenuItem, Box, Typography, Alert } from '@mui/materi
 
 const TaskInput = () => {
   const [task, setTask] = useState('');
-  const [priority, setPriority] = useState('Medium');
-  const [error, setError] = useState('');
+  const [priority, setPriority] = useState('Low');
   const dispatch = useDispatch();
   const { username } = useSelector((state) => state.auth.user);
 
@@ -15,6 +14,8 @@ const TaskInput = () => {
       username: username,   // Pass username
       task: { task, priority }   // Task object
     }));
+    setTask('');
+    setPriority('Low')
   };
   
 
@@ -24,7 +25,6 @@ const TaskInput = () => {
         Add New Task
       </Typography>
 
-      {error && <Alert severity="error">{error}</Alert>}
 
       {/* Task Input */}
       <TextField
@@ -33,6 +33,7 @@ const TaskInput = () => {
         value={task}
         onChange={(e) => setTask(e.target.value)}
         fullWidth
+        required
       />
 
       {/* Priority Selector */}
