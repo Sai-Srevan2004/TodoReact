@@ -1,8 +1,12 @@
 import React from 'react';
 import TaskInput from '../components/TaskInput';
 import { Box, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+
 
 const AddTaskPage = () => {
+  const { username } = useSelector((state) => state.auth.user);
+
   return (
     <Box
       sx={{
@@ -20,7 +24,7 @@ const AddTaskPage = () => {
         variant="h3"
         sx={{ color: '#1976d2', fontWeight: 'bold', mb: 3, textAlign: 'center' }}
       >
-        🚀 Welcome to To-Do App
+        🚀 Welcome to To-Do App {username}
       </Typography>
 
       {/* Task Input Section */}

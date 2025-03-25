@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const loadTasksFromLocalStorage = (username) => {
   if (!username) return [];
   const tasks = localStorage.getItem(`tasks_${username}`);
+
   return tasks ? JSON.parse(tasks) : [];
 };
 
@@ -20,22 +21,22 @@ const taskSlice = createSlice({
   },
   reducers: {
     setUserTasks: (state, action) => {
-      state.tasks = loadTasksFromLocalStorage(action.payload);  
+      state.tasks = loadTasksFromLocalStorage(action.payload);  // Load specific user tasks
     },
     addTask: (state, action) => {
-      const { username, task, priority } = action.payload;
-      state.tasks.push({ task, priority });
-      saveTasksToLocalStorage(username, state.tasks);  // 💾 Save on add
+      const { username, task } = action.payload;
+      state.tasks.push(task);  // Add the new task
+      saveTasksToLocalStorage(username, state.tasks);  // Save to localStorage
     },
     deleteTask: (state, action) => {
       const { username, index } = action.payload;
-      state.tasks.splice(index, 1);
-      saveTasksToLocalStorage(username, state.tasks);  // 💾 Save on delete
+      state.tasks.splice(index, 1);  // Remove the task
+      saveTasksToLocalStorage(username, state.tasks);  // Save updated list
     },
     clearTasks: (state, action) => {
       const { username } = action.payload;
-      state.tasks = [];
-      saveTasksToLocalStorage(username, []);  // 💾 Save empty tasks
+      state.tasks = [];  // Clear all tasks
+      saveTasksToLocalStorage(username, []);  // Save empty list to localStorage
     }
   }
 });

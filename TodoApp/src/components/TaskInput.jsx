@@ -8,23 +8,15 @@ const TaskInput = () => {
   const [priority, setPriority] = useState('Medium');
   const [error, setError] = useState('');
   const dispatch = useDispatch();
-  const { username } = useSelector((state) => state.auth);
+  const { username } = useSelector((state) => state.auth.user);
 
   const handleAddTask = () => {
-    if (task.trim()) {
-      const newTask = { username, task, priority };
-
-      // Dispatch to Redux and save in local storage
-      dispatch(addTask(newTask));
-
-      // Clear form fields
-      setTask('');
-      setPriority('Medium');
-      setError('');
-    } else {
-      setError('Please enter a valid task');
-    }
+    dispatch(addTask({ 
+      username: username,   // Pass username
+      task: { task, priority }   // Task object
+    }));
   };
+  
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

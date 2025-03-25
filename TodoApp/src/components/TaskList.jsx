@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTask } from '../redux/taskSlice';
+import { deleteTask, setUserTasks } from '../redux/taskSlice';   // Import setUserTasks
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, Chip, Tooltip
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const TaskList = () => {
-  const tasks = useSelector((state) => state.tasks.tasks);
   const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks.tasks);
+
+   const { username } = useSelector((state) => state.auth.user);
+ 
+
+  // ✅ Load tasks from localStorage on component mount
+  useEffect(() => {
+    if (username) {
+      dispatch(setUserTasks(username));   // Load tasks into Redux store
+    }
+  }, [dispatch,username]);
 
   return (
     <TableContainer component={Paper} sx={{ boxShadow: '0 8px 16px rgba(0,0,0,0.1)', borderRadius: '12px' }}>
       <Table sx={{ minWidth: 650 }} aria-label="task table">
-        
+
         {/* Table Header */}
         <TableHead>
           <TableRow sx={{ backgroundColor: '#1976d2' }}>
@@ -54,7 +64,10 @@ const TaskList = () => {
                 <TableCell align="center">
                   <Tooltip title="Delete Task" arrow>
                     <IconButton
-                      onClick={() => dispatch(deleteTask(index))}
+                      onClick={() => dispatch(deleteTask({
+                        username: user.username,    // Pass username
+                        index                       // Task index
+                      }))}
                       sx={{ color: '#d32f2f', '&:hover': { color: '#f00' } }}
                     >
                       <DeleteIcon />
